@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <title>Xóa Blog</title>
+</head>
+<body>
+<header th:replace="layout :: header"></header>
+
+<div class="main-content">
+    <div class="container">
+        <div class="delete-container">
+            <div class="delete-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <h1 class="delete-title">Xác nhận xóa blog</h1>
+
+            <div class="blog-info">
+                <h2 class="blog-title" th:text="${blog.title}"></h2>
+                <div class="blog-meta">
+                    <div class="meta-item">
+                        <i class="far fa-calendar"></i>
+                        Ngày tạo: <span th:text="${#temporals.format(blog.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="far fa-clock"></i>
+                        Cập nhật: <span th:text="${#temporals.format(blog.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                    </div>
+                </div>
+                <div class="blog-content">
+                    <p th:text="${#strings.abbreviate(blog.content, 200)}"></p>
+                </div>
+            </div>
+
+            <div class="delete-warning">
+                <p><strong>Cảnh báo:</strong> Hành động này không thể hoàn tác. Blog sẽ bị xóa vĩnh viễn.</p>
+            </div>
+
+            <div class="delete-actions">
+                <form th:action="@{/blog/delete}" method="POST">
+                    <input type="hidden" name="id" th:value="${blog.id}" />
+                    <button type="submit" class="btn btn-delete">
+                        <i class="fas fa-trash-alt"></i> Xác nhận xóa
+                    </button>
+                    <a th:href="@{/blog}" class="btn btn-cancel">
+                        <i class="fas fa-times"></i> Hủy
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="layout :: footer"></footer>
+
+<style>
+    /* Container Styles */
+    .delete-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 30px;
+        background: linear-gradient(145deg, #ffffff, #f9f9f9);
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 1px solid #e0e0e0;
+    }
+
+    /* Icon Styles */
+    .delete-icon {
+        font-size: 4rem;
+        color: #dc3545;
+        margin-bottom: 20px;
+        animation: bounce 1s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* Title Styles */
+    .delete-title {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    /* Blog Info Styles */
+    .blog-info {
+        text-align: left;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 5px solid #007bff;
+    }
+
+    .blog-title {
+        font-size: 1.6rem;
+        color: #333;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    .blog-meta {
+        color: #555;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+
+    .meta-item {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .meta-item i {
+        margin-right: 8px;
+        color: #007bff;
+        font-size: 1rem;
+    }
+
+    .blog-content {
+        color: #666;
+        font-style: italic;
+        border-left: 3px solid #ddd;
+        padding-left: 15px;
+        margin-top: 15px;
+    }
+
+    /* Warning Box */
+    .delete-warning {
+        padding: 15px;
+        background: linear-gradient(145deg, #fff3cd, #f9e9a3);
+        color: #856404;
+        border-radius: 8px;
+        border-left: 5px solid #ffc107;
+        margin: 20px 0;
+        font-weight: 600;
+    }
+
+    /* Action Buttons */
+    .delete-actions {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn i {
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+
+    .btn-delete {
+        background: linear-gradient(145deg, #dc3545, #c82333);
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: linear-gradient(145deg, #c82333, #dc3545);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cancel {
+        background: linear-gradient(145deg, #6c757d, #5a6268);
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background: linear-gradient(145deg, #5a6268, #6c757d);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .delete-container {
+            margin: 10px;
+            padding: 20px;
+        }
+
+        .delete-icon {
+            font-size: 3rem;
+        }
+
+        .delete-title {
+            font-size: 1.5rem;
+        }
+
+        .blog-title {
+            font-size: 1.3rem;
+        }
+
+        .delete-actions {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+            margin: 5px 0;
+        }
+    }
+</style>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</body>
+</html>
